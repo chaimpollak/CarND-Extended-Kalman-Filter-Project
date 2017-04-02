@@ -34,6 +34,7 @@ void check_arguments(int argc, char* argv[]) {
   if (!has_valid_args) {
     exit(EXIT_FAILURE);
   }
+
 }
 
 void check_files(ifstream& in_file, string& in_name,
