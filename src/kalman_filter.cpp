@@ -1,7 +1,9 @@
+#include <iostream>
 #include "kalman_filter.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+using namespace std;
 
 KalmanFilter::KalmanFilter() {}
 
@@ -22,18 +24,43 @@ void KalmanFilter::Predict() {
   TODO:
     * predict the state
   */
+  x_ = F_ * x_;
+  MatrixXd Ft = F_.transpose();
+  P_ = F_ * P_ * Ft + Q_;
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
-  /**
-  TODO:
-    * update the state by using Kalman Filter equations
-  */
+
+  VectorXd z_pred = H_ * x_;
+  Update(z_pred, z);
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
-  /**
-  TODO:
-    * update the state by using Extended Kalman Filter equations
-  */
+
+  float range = sqrt(pow(x_(0),2) + pow(x_(1),2));
+
+  if (fabs(x_(0)) < 0.0001 || fabs(range) < 0.0001){
+    return;
+  }
+  float phi = atan2(x_(1),x_(0));
+  VectorXd z_pred = VectorXd(3);
+  z_pred << range, phi, (x_(0)*x_(2) + x_(1)*x_(3)) / range;
+
+  Update(z_pred, z);
+
+}
+
+void KalmanFilter::Update(const VectorXd &z_pred, const VectorXd &z){
+  VectorXd y = z - z_pred;
+  MatrixXd Ht = H_.transpose();
+  MatrixXd PHt = P_ * Ht;
+  MatrixXd S = H_ * PHt + R_;
+  MatrixXd Si = S.inverse();
+  MatrixXd K = PHt * Si;
+
+  //new estimate
+  x_ = x_ + (K * y);
+  long x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
 }
