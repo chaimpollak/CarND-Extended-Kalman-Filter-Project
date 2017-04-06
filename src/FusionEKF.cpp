@@ -66,6 +66,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             0, 0, 1, 0,
             0, 0, 0, 1;
 
+    previous_timestamp_ = measurement_pack.timestamp_;
+
 
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {

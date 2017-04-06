@@ -1,4 +1,4 @@
-"C:\Program Files (x86)\JetBrains\CLion 2017.1\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\cscha\OneDrive\Documents\CARND\CarND-Extended-Kalman-Filter-Project
+"C:\Program Files (x86)\JetBrains\CLion 2017.1\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "C:\Users\Chaim Pollak\Documents\Car ND\CarND-Extended-Kalman-Filter-Project"
 -- The C compiler identification is GNU 5.3.0
 -- The CXX compiler identification is GNU 5.3.0
 -- Check for working C compiler: C:/MinGW/bin/gcc.exe
@@ -15,4 +15,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/cscha/OneDrive/Documents/CARND/CarND-Extended-Kalman-Filter-Project/cmake-build-debug
+-- Build files have been written to: C:/Users/Chaim Pollak/Documents/Car ND/CarND-Extended-Kalman-Filter-Project/cmake-build-debug
