@@ -69,7 +69,7 @@ public:
    * @param z_pred The prediction at k+1
    * @param z The measurement at k+1
    */
-  void Update(const Eigen::VectorXd &z_pred,const Eigen::VectorXd &z);
+  void CalculateKalmanGain(const Eigen::VectorXd &y);
 
 };
 

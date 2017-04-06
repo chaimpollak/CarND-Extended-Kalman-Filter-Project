@@ -25,6 +25,10 @@ public:
   */
   Eigen::MatrixXd CalculateJacobian(const Eigen::VectorXd& x_state);
 
+  /**
+   * A helper function to normalize an angle between -PI and PI
+   */
+  float NormalizeAngle(float angle);
 };
 
 #endif /* TOOLS_H_ */

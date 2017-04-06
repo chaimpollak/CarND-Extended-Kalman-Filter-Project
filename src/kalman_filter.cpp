@@ -1,5 +1,6 @@
 #include <iostream>
 #include "kalman_filter.h"
+#include "tools.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -32,26 +33,32 @@ void KalmanFilter::Predict() {
 void KalmanFilter::Update(const VectorXd &z) {
 
   VectorXd z_pred = H_ * x_;
-  Update(z_pred, z);
+  VectorXd y = z - z_pred;
+  CalculateKalmanGain(y);
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
-  float range = sqrt(pow(x_(0),2) + pow(x_(1),2));
+  float range = sqrt(pow(x_(0), 2) + pow(x_(1), 2));
 
-  if (fabs(x_(0)) < 0.0001 || fabs(range) < 0.0001){
+  if (fabs(x_(0)) < 0.0001 || fabs(range) < 0.0001) {
     return;
   }
-  float phi = atan2(x_(1),x_(0));
+  float phi = atan2(x_(1), x_(0));
   VectorXd z_pred = VectorXd(3);
-  z_pred << range, phi, (x_(0)*x_(2) + x_(1)*x_(3)) / range;
+  z_pred << range, phi, (x_(0) * x_(2) + x_(1) * x_(3)) / range;
+  VectorXd y = z - z_pred;
 
-  Update(z_pred, z);
+  if ( abs(y[1]) > M_PI ) {
+    Tools tools;
+    y[1] = tools.NormalizeAngle(y[1]);
+  }
+  CalculateKalmanGain(y);
 
 }
 
-void KalmanFilter::Update(const VectorXd &z_pred, const VectorXd &z){
-  VectorXd y = z - z_pred;
+void KalmanFilter::CalculateKalmanGain(const VectorXd &y){
+
   MatrixXd Ht = H_.transpose();
   MatrixXd PHt = P_ * Ht;
   MatrixXd S = H_ * PHt + R_;
